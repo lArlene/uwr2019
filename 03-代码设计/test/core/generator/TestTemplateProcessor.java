@@ -70,11 +70,17 @@ public class TestTemplateProcessor implements DataSourceType{
 		EasyMOck.expect(dsc.getDataHolder("sex")).andReturn("Male");
 		EasyMOck.expect(dsc.getDataHolder("readme")).andReturn("readme is not found!");
 		EasyMOck.expect(dsc.getDataHolder("testexpr")).andReturn("5.0");
-        EasyMock.replay(dec);
+        EasyMock.replay(dsc);
         //
         // 这里写代码
         //
-        //------------------------------------------------
+		PowerMock.mockStatic(DataSourceConfig.class);
+		PowerMock.expectPrivate(dsc.getFilename()).andReturn("resource/newtemplatezzz.doc");
+		PowerMock.expectPrivate(dsc.getDataHolder("sex")).andReturn("Male");
+		PowerMock.expectPrivate(dsc.getDataHolder("readme")).andReturn("readme is not found!");
+		PowerMock.expectPrivate(dsc.getDataHolder("testexpr")).andReturn("5.0");
+		PowerMock.replay(dsc);
+		PowerMock.verify(dsc);
 		//5. 重放所有的行为。
 		PowerMock.replayAll(dsc);
 		//初始化一个待测试类（SUT）的实例
